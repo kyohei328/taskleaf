@@ -18,7 +18,8 @@ require 'capybara/rspec' # PSpecでCapybaraを扱うために必要な機能の�
 
 RSpec.configure do |config|
   config.before(:each, type: :system) do #SystemSpecを実行するドライバの設定をする。
-    driven_by :selenium_chrome_headless
+    # driven_by :selenium_chrome_headless
+    driven_by :selenium_chrome
   end
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
