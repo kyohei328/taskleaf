@@ -26,7 +26,8 @@ class TasksController < ApplicationController
     # task = Task.find(params[:id])
     # task = current_user.tasks.find(params[:id])
     # task.update!(task_params)
-    @tass.update!(task_params)
+    @task.update!(task_params)
+    task_logger.debug #taskのログを出力
     # redirect_to tasks_url, notice: "タスク「#{task.name}」を更新しました。"
     redirect_to tasks_url, notice: "タスク「#{@task.name}」を更新しました。"
   end
@@ -34,10 +35,12 @@ class TasksController < ApplicationController
   def create
     # @task = Task.new(task_params)
     # @task = Task.new(task_params.merge(user_id: current_user.id)) ユーザーidを代入するやり方①
-     @task = current_user.tasks.new(task_params) #ユーザーidを代入するやり方②
+    @task = current_user.tasks.new(task_params) #ユーザーidを代入するやり方②
 
 
     if @task.save
+      logger.debug "task: #{@task.attributes.inspect}"
+      task_logger.debug #taskのログを出力
       redirect_to @task, notice: "タスク「#{@task.name}」を登録しました。"
     else
       render :new
@@ -55,12 +58,23 @@ class TasksController < ApplicationController
     # redirect_to tasks_url, notice: "タスク「#{task.name}」を削除しました。"
     redirect_to tasks_url, notice: "タスク「#{@task.name}」を削除しました。"
   end
+
+
+
+
+  def task_logger
+    @task_logger ||= Logger.new('log/task.log','daily')
+  end
+
   
+
   private
   
   def set_task
     @task = current_user.tasks.find(params[:id])
   end
+
+  
 
   def task_params
     params.require(:task).permit(:name, :description)

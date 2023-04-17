@@ -1,4 +1,5 @@
 Rails.application.configure do
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -11,6 +12,7 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+  # config.consider_all_requests_local = false
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
@@ -58,4 +60,19 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # logger.debug
+
+  #ログの設定（1日ごとのログを取得）
+  config.logger = Logger.new('log/development.log','daily')
+
+
+  #ロガーのフォーマット設定
+  config.logger.formatter = proc { |severity, timestamp, progname, message| 
+    "#{timestamp} :#{severity}: #{message}\n" 
+  }
+
+  
+
 end
+
